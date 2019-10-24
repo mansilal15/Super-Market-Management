@@ -24,14 +24,14 @@ int mini_main();
 
 class item
 {
- int ino;
+ int I_no;
  char name[100];
  float price,qty,tax,dis;
  public:
 	void create_item()
 	{
 	 cout<<"\n\nPlease Enter The No. of The Item : ";
-	 cin>>ino;
+	 cin>>I_no;
 	 cout<<"\nPlease Enter The Name of The Item : ";
 	fflush(stdin);
 	cin.getline(name,100);
@@ -43,15 +43,15 @@ class item
 
 	void show_item()
 	{
-	 cout<<"\nThe Item No. of The Item : "<<ino;
+	 cout<<"\nThe Item No. of The Item : "<<I_no;
 	 cout<<"\nThe Name of The Item : ";
 	 puts(name);
 	 cout<<"\nThe price of The Item : "<<price;
 	 cout<<"\nDiscount : "<<dis;
 	 }
 
-  int  retino()
-  {return ino;}
+  int  retI_no()
+  {return I_no;}
 
   float retprice()
   {return price;}
@@ -71,7 +71,7 @@ class item
 //****************************************************************
 
  fstream fp;
- item itm;
+ item i_tm;
 // COORD coord={0,0};
 
 //***************************************************************
@@ -86,8 +86,8 @@ void write_item()
     gotoxy(5,0);
     cout<<"CREATE ITEM";
     do{
-        itm.create_item();
-        fp.write((char*)&itm,sizeof(item));
+        i_tm.create_item();
+        fp.write((char*)&i_tm,sizeof(item));
         cout<<"\nDo you want to add another item please confirm ? (y/n) : ";
         	 PlaySound("confirm.wav", NULL, SND_ASYNC);
         cin>>a;
@@ -115,7 +115,7 @@ void display_all()
 
     cout<<"\n\n\n\t\tDISPLAY ALL RECORD !!!\n\n";
     fp.open("Shop.dat",ios::in);
-    while(fp.read((char*)&itm,sizeof(item)))
+    while(fp.read((char*)&i_tm,sizeof(item)))
 	{
 	 itm.show_item();
 	 cout<<"\n"<<endl;
@@ -138,12 +138,12 @@ void display_sp(int n)
 {
     int flag=0;
     fp.open("Shop.dat",ios::in);
-    while(fp.read((char*)&itm,sizeof(item)))
+    while(fp.read((char*)&i_tm,sizeof(item)))
 	{
-	 if(itm.retino()==n)
+	 if(i_tm.retino()==n)
 		{
 		 //system("cls");
-		 itm.show_item();
+		 i_tm.show_item();
 		 flag=1;
 		}
 	}
@@ -168,16 +168,16 @@ void modify_item()
     cout<<"\n\n\tPlease Enter The Item No. of The Item";
     cin>>no;
     fp.open("Shop.dat",ios::in|ios::out);
-    while(fp.read((char*)&itm,sizeof(item)) && found==0)
+    while(fp.read((char*)&i_tm,sizeof(item)) && found==0)
 	   {
-	    if(itm.retino()==no)
+	    if(i_tm.retino()==no)
 		   {
-		    itm.show_item();
+		    i_tm.show_item();
 		    cout<<"\n\nPlease Enter The New Details of Item"<<endl;
-		    itm.create_item();
-		    int pos=-1*sizeof(itm);
+		    i_tm.create_item();
+		    int pos=-1*sizeof(i_tm);
 		    fp.seekp(pos,ios::cur);
-		    fp.write((char*)&itm,sizeof(item));
+		    fp.write((char*)&i_tm,sizeof(item));
 		    cout<<"\n\n\t Record Updated\n";
 		    found=1;
 		   }
@@ -215,11 +215,11 @@ void delete_item()
     fstream fp2;
     fp2.open("Temp.dat",ios::out);
     fp.seekg(0,ios::beg);
-    while(fp.read((char*)&itm,sizeof(item)))
+    while(fp.read((char*)&i_tm,sizeof(item)))
 	{
-	 if(itm.retino()!=no)
+	 if(i_tm.retino()!=no)
 		{
-		 fp2.write((char*)&itm,sizeof(item));
+		 fp2.write((char*)&i_tm,sizeof(item));
 		 }
 	 }
     fp2.close();
@@ -269,15 +269,15 @@ void menu()
 	  for(int i=0;i<71;i++)
         cout<<"=";
         cout<<"\n";
-      while(fp.read((char*)&itm,sizeof(item)))
+      while(fp.read((char*)&i_tm,sizeof(item)))
 	 {
 	     int i=0;
 	     //gotoxy(0,8+i);
-	   cout<<"\n"<<itm.retino()<<"\t\t\t\t";
+	   cout<<"\n"<<i_tm.retino()<<"\t\t\t\t";
 	   //gotoxy(14,8+i);
-	   cout<<itm.retname()<<"\t\t\t\t";
+	   cout<<i_tm.retname()<<"\t\t\t\t";
 	   //gotoxy(66,5);
-	   cout<<itm.retprice()<<endl;
+	   cout<<i_tm.retprice()<<endl;
 	   i++;
 	}
 	 for(int i=0;i<71;i++)
@@ -351,24 +351,24 @@ void place_order()
      for(int x=0;x<=c;x++)
 	 {
 		 fp.open("Shop.dat",ios::in);
-		 fp.read((char*)&itm,sizeof(item));
+		 fp.read((char*)&i_tm,sizeof(item));
 		  while(!fp.eof())
 			{
-			if(itm.retino()==order_arr[x])
+			if(i_tm.retino()==order_arr[x])
 				{
 
 
 				    Y=7+J;
-				 amt=itm.retprice()*quan[x];
-				 damt=amt-(amt*itm.retdis()/100);
+				 amt=i_tm.retprice()*quan[x];
+				 damt=amt-(amt*i_tm.retdis()/100);
 				 gotoxy(X,Y);
 				 cout<<order_arr[x]<<"\t\t";X=X+(20);
 				  gotoxy(X,Y);
-				  cout<<itm.retname();X=X+(20);
+				  cout<<i_tm.retname();X=X+(20);
 				  gotoxy(X,Y);
 				  cout<<quan[x];X=X+(20);//<<"\t\t";
 				  gotoxy(X,Y);
-				  cout<<itm.retprice();X=X+(20);//<<"\t\t";
+				  cout<<i_tm.retprice();X=X+(20);//<<"\t\t";
 				  gotoxy(X,Y);
 				   cout<<amt;X=X+(20);//<<"\t\t";
 				  gotoxy(X,Y);
@@ -377,7 +377,7 @@ void place_order()
 				 J++;
 				 X=2;
 				}
-			fp.read((char*)&itm,sizeof(item));
+			fp.read((char*)&i_tm,sizeof(item));
 			}
 		 fp.close();
 	  }
@@ -600,7 +600,7 @@ int mini_main()
                         gotoxy(99,37);
                         cout<<"Prof. Aniruddh Fatania\n\n\n";
                         gotoxy(99,39);
-                         cout<<"Prof. Ronak Patel\n\n\n";
+                         cout<<"Prof. Raunak Patel\n\n\n";
                          system("pause");
                          goto x;
                          break;
